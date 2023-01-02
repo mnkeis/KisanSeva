@@ -15,21 +15,21 @@ class AddRentToolsCtrl extends GetxController {
   String picDownloadUrl = '';
   var logger = Logger(printer: PrettyPrinter());
   final isLoading = false.obs;
-  FirebaseUser firebaseUser;
-  String ownerContactInfo;
+  late User firebaseUser;
+  late String ownerContactInfo;
   // Firestore firestore = FirebaseFirestore.instance;
   String contact = "";
   Future<dynamic> postImage(File imageFile) async {
     logger.d('inside postImage');
 
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    StorageReference storageReference =
+    Reference storageReference =
         FirebaseStorage.instance.ref().child('rentTools/$fileName');
     // StorageUploadTask uploadTask = reference.putData(
     //     (await imageFile.getByteData(quality: 25)).buffer.asUint8List());
-    StorageUploadTask uploadTask = storageReference.putFile(imageFile);
+    UploadTask uploadTask = storageReference.putFile(imageFile);
     print('here 2');
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    TaskSnapshot storageTaskSnapshot = await uploadTask;
     print(storageTaskSnapshot.ref.getDownloadURL());
     print('here 3');
 
@@ -43,10 +43,9 @@ class AddRentToolsCtrl extends GetxController {
   }
 
   getCurrentUser() async {
-    await FirebaseAuth?.instance?.currentUser()?.then((value) {
-      contact = value?.phoneNumber;
-      rentToolsModel.ownerContactInfo = (contact);
-    });
+    final value = FirebaseAuth.instance.currentUser;
+    contact = value?.phoneNumber ?? "";
+    rentToolsModel.ownerContactInfo = (contact);
   }
 
   // getOwnerInfoFromFirestore() async {
@@ -83,13 +82,13 @@ class AddRentToolsCtrl extends GetxController {
     await postImage(imageFile)
         .then((value) => rentToolsModel.toolImage = value);
 
-    logger.d("inside addRentTools ${rentToolsModel?.toJson()}");
+    logger.d("inside addRentTools ${rentToolsModel.toJson()}");
     await getCurrentUser();
     // await getOwnerInfoFromFirestore();
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("rentTools")
-        .document()
-        .setData(rentToolsModel.toJson());
+        .doc()
+        .set(rentToolsModel.toJson());
     // await crudOp.createPost(
     //   collectionName: 'examsResources',
     //   data: _examModel.toJson(),

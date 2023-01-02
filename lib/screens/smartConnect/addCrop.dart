@@ -15,13 +15,13 @@ class _AddCropState extends State<AddCrop> {
   Widget build(BuildContext context) {
     void _getImage(bool fromCamera) async {
       if (fromCamera) {
-        imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
+        imageFile = await ImagePicker().pickImage(source: ImageSource.camera);
         setState(() {
           this.imageFile = imageFile;
           addCropCtrl.cropModel.cropImage = imageFile.toString();
         });
       } else {
-        imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+        imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
         setState(() {
           this.imageFile = imageFile;
         });
@@ -88,13 +88,15 @@ class _AddCropState extends State<AddCrop> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: () async {
                 // Navigator.pop(context);
                 await addCropCtrl.addCrop(imageFile);
                 Navigator.pop(context);
               },
-              shape: StadiumBorder(),
+              style: ButtonStyle(
+                shape: MaterialStatePropertyAll(StadiumBorder()),
+              ),
               child: Text(
                 "Upload",
                 style: TextStyle(color: Colors.black87),

@@ -17,16 +17,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  FirebaseUser user;
-   void initState() {
+  User? user;
+  void initState() {
     // TODO: implement initState
-    user= Provider.of<FirebaseUserProvider>(context, listen: false)
-        .user; 
+    user = Provider.of<FirebaseUserProvider>(context, listen: false).user;
     super.initState();
   }
+
   final formKey = new GlobalKey<FormState>();
-final CollectionReference userCollection = Firestore.instance.collection('users');
-  String phoneNo, verificationId, smsCode;
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+  String? phoneNo, verificationId, smsCode;
 
   bool codeSent = false;
 /*Widget getImageAsset(){
@@ -192,8 +193,8 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
                                 child: TextFormField(
                                   keyboardType: TextInputType.phone,
                                   decoration: InputDecoration(
-                                    hintText:     AppLocalizations.of(context)
-                                            .translate ('Enter your phone number')  ,
+                                    hintText: AppLocalizations.of(context)
+                                        ?.translate('Enter your phone number'),
                                     prefixText: '+91',
                                     prefixIcon: Icon(Icons.phone),
                                     enabledBorder: OutlineInputBorder(
@@ -221,8 +222,9 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
                                             child: TextFormField(
                                               keyboardType: TextInputType.phone,
                                               decoration: InputDecoration(
-                                                hintText:     AppLocalizations.of(context)
-                                            .translate ('Enter OTP')  ,
+                                                hintText: AppLocalizations.of(
+                                                        context)
+                                                    ?.translate('Enter OTP'),
                                                 prefixIcon: Icon(Icons.vpn_key),
                                                 enabledBorder:
                                                     OutlineInputBorder(
@@ -245,53 +247,60 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
                               child: Container(
                                 height: 46,
                                 width: 160,
-                                child: RaisedButton(
+                                child: ElevatedButton(
                                   onPressed: () {
-                                    AuthService().savePhoneNumber(this.phoneNo);
+                                    AuthService()
+                                        .savePhoneNumber(this.phoneNo!);
                                     codeSent
                                         ? AuthService().signInWithOTP(
                                             smsCode, verificationId)
                                         : verifyPhone(phoneNo);
-                                      
-                                          saveData();
+
+                                    saveData();
                                   },
                                   child: codeSent
                                       ? Text(
-                                            AppLocalizations.of(context)
-                                            .translate ('Continue'), 
+                                          AppLocalizations.of(context)
+                                                  ?.translate('Continue') ??
+                                              'Continue',
                                           style: TextStyle(fontSize: 20),
                                         )
                                       : Text(
-                                         AppLocalizations.of(context)
-                                            .translate ('Verify')  , 
-                                          style: TextStyle(fontSize: 20),
+                                          AppLocalizations.of(context)
+                                                  ?.translate('Verify') ??
+                                              'Verify',
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            backgroundColor: Color(0XFF303f9f),
+                                          ),
+                                          // shape: RoundedRectangleBorder(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(30.0),
+                                          // ),
                                         ),
-                                  color: Color(0XFF303f9f),
-                                  textColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
                                 ),
                               ),
                             ),
                             SizedBox(height: 12),
-                                         Align(
-                    alignment: Alignment(0.9, -0.9),
-                    child: DropdownButton(
-                      underline: SizedBox(),
-                      icon: Icon(Icons.language),
-                      iconSize: 40,
-                      items: Language.languageList()
-                          .map<DropdownMenuItem>((lang) => DropdownMenuItem(
-                                child: Text(lang.name),
-                                value: lang,
-                              ))
-                          .toList(),
-                      onChanged: (language) {
-                        _changeLanguage(language);
-                      },
-                    ),
-                  ),
+                            Align(
+                              alignment: Alignment(0.9, -0.9),
+                              child: DropdownButton(
+                                underline: SizedBox(),
+                                icon: Icon(Icons.language),
+                                iconSize: 40,
+                                items: Language.languageList()
+                                    .map<DropdownMenuItem>(
+                                        (lang) => DropdownMenuItem(
+                                              child: Text(lang.name ?? 'EN'),
+                                              value: lang,
+                                            ))
+                                    .toList(),
+                                onChanged: (language) {
+                                  _changeLanguage(language);
+                                },
+                              ),
+                            ),
                             SizedBox(height: 18),
                           ]))))
             ]))));
@@ -336,11 +345,11 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
     };
 
     final PhoneVerificationFailed verificationfailed =
-        (AuthException authException) {
+        (FirebaseAuthException authException) {
       print('${authException.message}');
     };
 
-    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+    final PhoneCodeSent smsSent = (String verId, int? forceResend) {
       this.verificationId = verId;
       setState(() {
         this.codeSent = true;
@@ -350,7 +359,6 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
     final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
       this.verificationId = verId;
     };
-    
 
     await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phoneNo,
@@ -360,14 +368,13 @@ final CollectionReference userCollection = Firestore.instance.collection('users'
         codeSent: smsSent,
         codeAutoRetrievalTimeout: autoTimeout);
   }
-saveData()
-async{
-          SharedPreferences prefs=await SharedPreferences.getInstance();
-    String phno  = prefs.getString('Phone Number');
-   await userCollection.document(user.uid).setData({
-    "phno" :phno
-    });
-}
+
+  saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? phno = prefs.getString('Phone Number');
+    await userCollection.doc(user?.uid).set({"phno": phno});
+  }
+
   _inputTextField(hintText, bool obscuretext) {
     return Container(
       height: 56,
@@ -392,8 +399,7 @@ async{
     return Padding(
       padding: EdgeInsets.only(left: 24),
       child: Text(
-         AppLocalizations.of(context)
-                                            .translate(title),
+        AppLocalizations.of(context)?.translate(title) ?? 'Title',
         style: TextStyle(
           fontWeight: FontWeight.w500,
           color: Colors.black,
@@ -402,14 +408,15 @@ async{
       ),
     );
   }
-void _changeLanguage(Language language) {
-    Locale _temp;
+
+  void _changeLanguage(Language language) {
+    late Locale _temp;
     switch (language.languageCode) {
       case 'en':
-        _temp = Locale(language.languageCode, 'US');
+        _temp = Locale(language.languageCode!, 'US');
         break;
       case 'hi':
-        _temp = Locale(language.languageCode, 'IN');
+        _temp = Locale(language.languageCode!, 'IN');
         break;
     }
     MyApp.setLocale(context, _temp);
@@ -417,14 +424,14 @@ void _changeLanguage(Language language) {
 
   _topheader() {
     return Padding(
-      padding: EdgeInsets.all( 32),
+      padding: EdgeInsets.all(32),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
-            AppLocalizations.of(context)
-                                            .translate('Create\nYour\nAccount'),
+            AppLocalizations.of(context)?.translate('Create\nYour\nAccount') ??
+                'Create\nYour\nAccount',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,

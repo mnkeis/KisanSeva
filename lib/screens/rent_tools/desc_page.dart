@@ -5,9 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 class DescPage extends StatelessWidget {
   final RentToolsModel rentToolsModel;
 
-  const DescPage({Key key, this.rentToolsModel}) : super(key: key);
+  const DescPage({Key? key, required this.rentToolsModel}) : super(key: key);
   call(String x) async {
-    await launch('tel:$x');
+    await launchUrl(Uri(host: 'tel:$x'));
   }
 
   @override
@@ -24,7 +24,7 @@ class DescPage extends StatelessWidget {
                 height: 10,
               ),
               Image(
-                image: NetworkImage(rentToolsModel.toolImage),
+                image: NetworkImage(rentToolsModel.toolImage!),
                 height: MediaQuery.of(context).size.height / 1.55,
                 fit: BoxFit.contain,
               ),
@@ -32,19 +32,19 @@ class DescPage extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                rentToolsModel.toolName,
+                rentToolsModel.toolName!,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                rentToolsModel.toolPricePerDay,
+                rentToolsModel.toolPricePerDay!,
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
-              Text(rentToolsModel.toolDescription),
+              Text(rentToolsModel.toolDescription!),
               SizedBox(
                 height: 10,
               ),
@@ -53,11 +53,13 @@ class DescPage extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () {
-                        call(rentToolsModel.ownerContactInfo);
+                        call(rentToolsModel.ownerContactInfo!);
                       },
-                      shape: StadiumBorder(),
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(StadiumBorder()),
+                      ),
                       child: Center(
                         child: Row(
                           children: [
@@ -76,9 +78,11 @@ class DescPage extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    RaisedButton(
+                    ElevatedButton(
                       onPressed: () {},
-                      shape: StadiumBorder(),
+                      style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(StadiumBorder()),
+                      ),
                       child: Center(
                         child: Row(
                           children: [

@@ -14,17 +14,17 @@ class WHomescreen extends StatefulWidget {
 
 class _HomescreenState extends State<WHomescreen> {
   bool isLoading = false;
-  WeatherData weatherData;
-  ForecastData forecastData;
+  WeatherData? weatherData;
+  ForecastData? forecastData;
 
   loadWeather() async {
     setState(() {
       isLoading = true;
     });
-    Position position;
+    Position? position;
     try {
-      position =
-          await getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+      position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low);
     } catch (e) {
       print(e);
     }
@@ -33,10 +33,11 @@ class _HomescreenState extends State<WHomescreen> {
       final lat = position.latitude;
       final lon = position.longitude;
 
-      final weatherResponse = await http.get(
-          'https://api.openweathermap.org/data/2.5/weather?APPID=0721392c0ba0af8c410aa9394defa29e&lat=${lat.toString()}&lon=${lon.toString()}');
-      final forecastResponse = await http.get(
-          'https://api.openweathermap.org/data/2.5/forecast?APPID=0721392c0ba0af8c410aa9394defa29e&lat=${lat.toString()}&lon=${lon.toString()}');
+      final weatherResponse = await http.get(Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?APPID=0721392c0ba0af8c410aa9394defa29e&lat=${lat.toString()}&lon=${lon.toString()}'));
+
+      final forecastResponse = await http.get(Uri.parse(
+          'https://api.openweathermap.org/data/2.5/forecast?APPID=0721392c0ba0af8c410aa9394defa29e&lat=${lat.toString()}&lon=${lon.toString()}'));
 
       if (weatherResponse.statusCode == 200 &&
           forecastResponse.statusCode == 200) {
@@ -78,7 +79,7 @@ class _HomescreenState extends State<WHomescreen> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: weatherData != null
-                        ? Weather(weather: weatherData)
+                        ? Weather(weather: weatherData!)
                         : Container(),
                   ),
                   // Padding(
@@ -106,10 +107,10 @@ class _HomescreenState extends State<WHomescreen> {
                   height: 200.0,
                   child: forecastData != null
                       ? ListView.builder(
-                          itemCount: forecastData.list.length,
+                          itemCount: forecastData?.list.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => WeatherItem(
-                              weather: forecastData.list.elementAt(index)))
+                              weather: forecastData?.list.elementAt(index)))
                       : Container(),
                 ),
               ),

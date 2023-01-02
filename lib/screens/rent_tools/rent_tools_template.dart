@@ -5,7 +5,8 @@ import 'package:kisanseva/screens/rent_tools/desc_page.dart';
 class RentToolsTemplate extends StatelessWidget {
   final RentToolsModel rentToolsModel;
 
-  const RentToolsTemplate({Key key, this.rentToolsModel}) : super(key: key);
+  const RentToolsTemplate({Key? key, required this.rentToolsModel})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,14 +38,14 @@ class RentToolsTemplate extends StatelessWidget {
               Image(
                 height: MediaQuery.of(context).size.height / 4,
                 width: MediaQuery.of(context).size.width,
-                image: NetworkImage(rentToolsModel?.toolImage),
+                image: NetworkImage(rentToolsModel.toolImage!),
                 fit: BoxFit.cover,
               ),
               SizedBox(
                 height: 5,
               ),
               Text(
-                rentToolsModel?.toolName,
+                rentToolsModel.toolName!,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -54,7 +55,7 @@ class RentToolsTemplate extends StatelessWidget {
                 height: 5,
               ),
               Text(
-                "${rentToolsModel?.toolPricePerDay}/day",
+                "${rentToolsModel.toolPricePerDay}/day",
                 style: TextStyle(
                   fontSize: 16,
                 ),

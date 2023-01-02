@@ -12,14 +12,14 @@ class CropModel {
     this.cropQuantity,
   });
 
-  String cropImage;
-  String cropName;
-  String cropDescription;
-  String msp;
-  List<dynamic> allBid;
-  String higestBid;
-  String ownerContactInfo;
-  String cropQuantity;
+  String? cropImage;
+  String? cropName;
+  String? cropDescription;
+  String? msp;
+  List<dynamic>? allBid;
+  String? higestBid;
+  String? ownerContactInfo;
+  String? cropQuantity;
 
   factory CropModel.fromRawJson(String str) =>
       CropModel.fromJson(json.decode(str));

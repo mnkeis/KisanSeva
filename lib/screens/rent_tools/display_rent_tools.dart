@@ -20,17 +20,16 @@ class DisplayRentTools extends StatelessWidget {
   final displayRentToolsCtrl = Get.put(DisplayRentToolsCtrl());
   final logger = Logger();
 
-
   @override
   Widget build(BuildContext context) {
     void _changeLanguage(Language language) {
-      Locale _temp;
+      late Locale _temp;
       switch (language.languageCode) {
         case 'en':
-          _temp = Locale(language.languageCode, 'US');
+          _temp = Locale(language.languageCode!, 'US');
           break;
         case 'hi':
-          _temp = Locale(language.languageCode, 'IN');
+          _temp = Locale(language.languageCode!, 'IN');
           break;
       }
       MyApp.setLocale(context, _temp);
@@ -79,7 +78,7 @@ class DisplayRentTools extends StatelessWidget {
           iconSize: 40,
           items: Language.languageList()
               .map<DropdownMenuItem>((lang) => DropdownMenuItem(
-                    child: Text(lang.name),
+                    child: Text(lang.name!),
                     value: lang,
                   ))
               .toList(),
@@ -89,7 +88,7 @@ class DisplayRentTools extends StatelessWidget {
         ),
       )),
       appBar: AppBar(
-        title: Text((AppLocalizations.of(context).translate("Rent Tools"))),
+        title: Text((AppLocalizations.of(context)!.translate("Rent Tools")!)),
         actions: [
           DropdownButton(
             // underline: SizedBox(),
@@ -97,7 +96,7 @@ class DisplayRentTools extends StatelessWidget {
             iconSize: 24,
             items: Language.languageList()
                 .map<DropdownMenuItem>((lang) => DropdownMenuItem(
-                      child: Text(lang.name),
+                      child: Text(lang.name!),
                       value: lang,
                     ))
                 .toList(),
@@ -189,7 +188,7 @@ class DisplayRentTools extends StatelessWidget {
                                 "displayRentToolsCtrl.selectedCategory.value is ${displayRentToolsCtrl.selectedCategory.value} ");
                           },
                           child: Obx(() => Text(
-                                AppLocalizations.of(context).translate("All"),
+                                AppLocalizations.of(context)!.translate("All")!,
                                 style: displayRentToolsCtrl
                                             .selectedCategory.value ==
                                         "All"
@@ -222,8 +221,8 @@ class DisplayRentTools extends StatelessWidget {
                                 "displayRentToolsCtrl.selectedCategory.value is ${displayRentToolsCtrl.selectedCategory.value} ");
                           },
                           child: Obx(() => Text(
-                                AppLocalizations.of(context)
-                                    .translate("Tractors"),
+                                AppLocalizations.of(context)!
+                                    .translate("Tractors")!,
                                 style: displayRentToolsCtrl
                                             .selectedCategory.value ==
                                         "Tractors"
@@ -256,8 +255,8 @@ class DisplayRentTools extends StatelessWidget {
                                 "displayRentToolsCtrl.selectedCategory.value is ${displayRentToolsCtrl.selectedCategory.value} ");
                           },
                           child: Obx(() => Text(
-                                AppLocalizations.of(context)
-                                    .translate("Harvestors"),
+                                AppLocalizations.of(context)!
+                                    .translate("Harvestors")!,
                                 style: displayRentToolsCtrl
                                             .selectedCategory.value ==
                                         "Harvestors"
@@ -290,8 +289,8 @@ class DisplayRentTools extends StatelessWidget {
                                 "displayRentToolsCtrl.selectedCategory.value is ${displayRentToolsCtrl.selectedCategory.value} ");
                           },
                           child: Obx(() => Text(
-                                AppLocalizations.of(context)
-                                    .translate("Pesticides"),
+                                AppLocalizations.of(context)!
+                                    .translate("Pesticides")!,
                                 style: displayRentToolsCtrl
                                             .selectedCategory.value ==
                                         "Pesticides"
@@ -324,8 +323,8 @@ class DisplayRentTools extends StatelessWidget {
                                 "displayRentToolsCtrl.selectedCategory.value is ${displayRentToolsCtrl.selectedCategory.value} ");
                           },
                           child: Obx(() => Text(
-                                AppLocalizations.of(context)
-                                    .translate("Others"),
+                                AppLocalizations.of(context)!
+                                    .translate("Others")!,
                                 style: displayRentToolsCtrl
                                             .selectedCategory.value ==
                                         "Others"
@@ -361,7 +360,8 @@ class DisplayRentTools extends StatelessWidget {
                           DocumentSnapshot rentTools =
                               snapshot.data.documents[index];
                           RentToolsModel rentToolsModel =
-                              RentToolsModel.fromJson(rentTools.data);
+                              RentToolsModel.fromJson(
+                                  rentTools.data as Map<String, dynamic>);
                           return RentToolsTemplate(
                               rentToolsModel: rentToolsModel);
                         },

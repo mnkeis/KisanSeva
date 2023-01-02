@@ -6,7 +6,7 @@ import 'BidPage.dart';
 class CropTemplate extends StatelessWidget {
   final CropModel cropModel;
 
-  const CropTemplate({Key key, this.cropModel}) : super(key: key);
+  const CropTemplate({Key? key, required this.cropModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class CropTemplate extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
                         child: Image.network(
-                          cropModel.cropImage,
+                          cropModel.cropImage!,
                           fit: BoxFit.cover,
                           width: 180,
                           height: 180,
@@ -102,20 +102,23 @@ class CropTemplate extends StatelessWidget {
                         // ),
                         // borderRadius: BorderRadius.all(Radius.circular(5)),
                         // ),
-                        child: Text("Quantity :  ${cropModel?.cropQuantity}"),
+                        child: Text("Quantity :  ${cropModel.cropQuantity}"),
                       ),
-                      RaisedButton(
-                        color: Colors.blue,
-                        elevation: 3,
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.blue),
+                          elevation: MaterialStatePropertyAll(3),
+                        ),
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BidPage(
-                                      cropModel.cropImage,
-                                      cropModel.msp,
-                                      cropModel.cropName,
-                                      cropModel.cropDescription,
+                                      cropModel.cropImage!,
+                                      cropModel.msp!,
+                                      cropModel.cropName!,
+                                      cropModel.cropDescription!,
                                     )),
                           );
                         },

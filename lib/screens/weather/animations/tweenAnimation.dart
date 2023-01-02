@@ -16,7 +16,7 @@ class _OpacityanimateState extends State<Opacityanimate> {
       child: TweenAnimationBuilder(
         duration: const Duration(seconds: 4),
         tween: tween,
-        builder: (BuildContext context, double opacity, Widget child) {
+        builder: (context, opacity, child) {
           return Opacity(
             opacity: opacity,
             child: Column(

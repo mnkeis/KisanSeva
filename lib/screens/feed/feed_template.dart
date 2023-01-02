@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 class FeedTemplate extends StatelessWidget {
   final FeedModel feedModel;
 
-  const FeedTemplate({Key key, this.feedModel}) : super(key: key);
+  const FeedTemplate({Key? key, required this.feedModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,7 +21,7 @@ class FeedTemplate extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 3,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(feedModel.img),
+                  image: NetworkImage(feedModel.img!),
                   fit: BoxFit.cover,
                 ),
                 borderRadius: BorderRadius.circular(15),
@@ -49,7 +49,7 @@ class FeedTemplate extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        feedModel.headline,
+                        feedModel.headline!,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -58,7 +58,7 @@ class FeedTemplate extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        feedModel.date,
+                        feedModel.date!,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 14,
@@ -76,9 +76,9 @@ class FeedTemplate extends StatelessWidget {
   }
 }
 
-_launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
+_launchURL(String? url) async {
+  if (await canLaunchUrl(Uri(host: url))) {
+    await launchUrl(Uri(host: url));
   } else {
     throw 'Could not launch $url';
   }

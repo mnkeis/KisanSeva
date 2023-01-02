@@ -7,22 +7,24 @@ import 'package:url_launcher/url_launcher.dart';
 class FeedDetails extends StatelessWidget {
   final FeedModel feedModel;
 
-  const FeedDetails({Key key, this.feedModel}) : super(key: key);
+  const FeedDetails({Key? key, required this.feedModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          (AppLocalizations.of(context).translate("Feed")),
+          (AppLocalizations.of(context)?.translate("Feed"))!,
         ),
         actions: [
-          FlatButton(
-            color: Colors.green,
+          TextButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(Colors.green),
+            ),
             onPressed: () {},
             child: Row(
               children: [
                 Text(
-                  (AppLocalizations.of(context).translate("Bookmarks")),
+                  (AppLocalizations.of(context)?.translate("Bookmarks"))!,
                   style: TextStyle(color: Colors.black87),
                 ),
                 Icon(Icons.bookmark)
@@ -37,7 +39,7 @@ class FeedDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              feedModel.headline,
+              feedModel.headline!,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -47,7 +49,7 @@ class FeedDetails extends StatelessWidget {
               height: 5,
             ),
             Text(
-              feedModel.date,
+              feedModel.date!,
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 14,
@@ -57,7 +59,7 @@ class FeedDetails extends StatelessWidget {
               height: 15,
             ),
             Image.network(
-              feedModel.img,
+              feedModel.img!,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover,
             ),

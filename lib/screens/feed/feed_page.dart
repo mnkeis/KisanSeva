@@ -38,9 +38,11 @@ class Feed extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
-              elevation: 4.0,
-              color: Colors.grey,
+            child: ElevatedButton(
+              style: ButtonStyle(
+                elevation: MaterialStatePropertyAll(4.0),
+                backgroundColor: MaterialStatePropertyAll(Colors.grey),
+              ),
               onPressed: () {
                 Navigator.push(context,
                     new MaterialPageRoute(builder: (context) => WHomescreen()));
@@ -102,7 +104,7 @@ class Feed extends StatelessWidget {
             //   },
             // ),
             StreamBuilder<dynamic>(
-              stream: Firestore.instance.collection('feed').snapshots(),
+              stream: FirebaseFirestore.instance.collection('feed').snapshots(),
               // stream: displayRentToolsCtrl.rentToolsStrems(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -113,7 +115,8 @@ class Feed extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       DocumentSnapshot feed = snapshot.data.documents[index];
-                      FeedModel feedModel = FeedModel.fromJson(feed.data);
+                      FeedModel feedModel =
+                          FeedModel.fromJson(feed.data as Map<String, dynamic>);
                       return FeedTemplate(feedModel: feedModel);
                     },
                   );
@@ -131,7 +134,7 @@ class Feed extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.call),
         onPressed: () async {
-          await launch('tel:18001801551');
+          await launchUrl(Uri(host: 'tel:18001801551'));
         },
       ),
     );

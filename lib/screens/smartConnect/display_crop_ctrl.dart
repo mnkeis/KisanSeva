@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:kisanseva/models/crop_model.dart';
 
 class DisplayCropCtrl extends GetxController {
-  CropModel cropModel=CropModel();
-  final isLoading=false.obs;
-  cropStream(){
-    Firestore.instance.collection('crop').getDocuments();
+  CropModel cropModel = CropModel();
+  final isLoading = false.obs;
+  cropStream() {
+    FirebaseFirestore.instance.collection('crop').get();
   }
 }

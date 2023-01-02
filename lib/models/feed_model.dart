@@ -8,10 +8,10 @@ class FeedModel {
     this.url,
   });
 
-  String headline;
-  String date;
-  String img;
-  String url;
+  String? headline;
+  String? date;
+  String? img;
+  String? url;
 
   factory FeedModel.fromRawJson(String str) =>
       FeedModel.fromJson(json.decode(str));

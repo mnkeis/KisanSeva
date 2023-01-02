@@ -3,10 +3,10 @@ import 'package:kisanseva/screens/weather/model/weatherModel.dart';
 class ForecastData {
   final List list;
 
-  ForecastData({this.list});
+  ForecastData({required this.list});
 
   factory ForecastData.fromJson(Map<String, dynamic> json) {
-    List list = new List();
+    List list = [];
 
     for (dynamic e in json['list']) {
       WeatherData w = new WeatherData(

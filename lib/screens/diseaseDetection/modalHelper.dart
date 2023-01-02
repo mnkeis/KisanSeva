@@ -23,8 +23,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  File _image;
-  List _recognitions;
+  late File _image;
+  late List _recognitions;
   String diseaseName = "";
   bool _busy = false;
 
@@ -60,25 +60,27 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> predictImagePickerGallery(BuildContext context) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
+    final file = File(image.path);
     setState(() {
       _busy = true;
-      _image = image;
+      _image = file;
     });
     Navigator.of(context).pop();
-    recognizeImage(image);
+    recognizeImage(file);
   }
 
   Future<void> predictImagePickerCamera(BuildContext context) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return;
+    final file = File(image.path);
     setState(() {
       _busy = true;
-      _image = image;
+      _image = file;
     });
     Navigator.of(context).pop();
-    recognizeImage(image);
+    recognizeImage(file);
   }
 
   final disease = {
@@ -182,7 +184,7 @@ class _MyAppState extends State<MyApp> {
     );
     setState(() {
       _busy = false;
-      _recognitions = recognitions;
+      _recognitions = recognitions!;
     });
   }
 
@@ -268,7 +270,7 @@ class _MyAppState extends State<MyApp> {
                 SizedBox(
                   height: 5,
                 ),
-                Text(disease[diseaseName]),
+                Text(disease[diseaseName]!),
               ],
             ),
           ),
@@ -286,7 +288,7 @@ class _MyAppState extends State<MyApp> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text ('Plant Disease Recognition'),
+        title: Text('Plant Disease Recognition'),
       ),
       body: Stack(
         children: stackChildren,

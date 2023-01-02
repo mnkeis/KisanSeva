@@ -89,7 +89,7 @@ class Cure extends StatelessWidget {
               height: 10,
             ),
             Expanded(
-              child: Text(disease[diseaseName]),
+              child: Text(disease[diseaseName]!),
             ),
           ],
         ),

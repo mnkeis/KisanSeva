@@ -7,7 +7,7 @@ import 'package:kisanseva/screens/feed/feed_page.dart';
 import 'package:kisanseva/screens/rent_tools/display_rent_tools.dart';
 import 'package:kisanseva/screens/smartConnect/smartConnect.dart';
 import 'package:kisanseva/services/authservice.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'smartConnect/connect.dart';
 
@@ -83,6 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   nav_bar() {
     return PersistentTabView(
+      context,
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),
@@ -138,38 +139,33 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: Icon(
           Icons.build,
         ),
-        title: ( AppLocalizations.of(context)
-                                            .translate ("Tools") ),
-        activeColor: Colors.green,
-        inactiveColor: Colors.grey,
+        title: (AppLocalizations.of(context)?.translate("Tools")),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.local_florist),
-        title: (AppLocalizations.of(context)
-                                            .translate ("Diseases")),
-        activeColor: Colors.green,
-        inactiveColor: Colors.grey,
+        title: (AppLocalizations.of(context)?.translate("Diseases")),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.attach_money),
-        title: (AppLocalizations.of(context)
-                                            .translate ("Yield")),
-        activeColor: Colors.green,
-        inactiveColor: Colors.grey,
+        title: (AppLocalizations.of(context)?.translate("Yield")),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.store),
-        title: (AppLocalizations.of(context)
-                                            .translate ("Connect")),
-        activeColor: Colors.green,
-        inactiveColor: Colors.grey,
+        title: (AppLocalizations.of(context)?.translate("Connect")),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.news_solid),
-        title: (AppLocalizations.of(context)
-                                            .translate ("Feed")),
-        activeColor: Colors.green,
-        inactiveColor: Colors.grey,
+        title: (AppLocalizations.of(context)?.translate("Feed")),
+        activeColorPrimary: Colors.green,
+        inactiveColorPrimary: Colors.grey,
       ),
     ];
   }

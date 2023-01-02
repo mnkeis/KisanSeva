@@ -17,7 +17,7 @@ class _AddItemState extends State<AddItem> {
   var imageFile;
   // List<Asset> multiImageList = List<Asset>();
   String dropdownValue = "Tractors";
-  String newValue;
+  late String newValue;
   final logger = Logger();
   final addRentToolsCtrl = Get.put(AddRentToolsCtrl());
   // Future<void> loadAssets() async {
@@ -65,13 +65,13 @@ class _AddItemState extends State<AddItem> {
   Widget build(BuildContext context) {
     void _getImage(bool fromCamera) async {
       if (fromCamera) {
-        imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
+        imageFile = await ImagePicker().pickImage(source: ImageSource.camera);
         setState(() {
           this.imageFile = imageFile;
           addRentToolsCtrl.rentToolsModel.toolImage = imageFile.toString();
         });
       } else {
-        imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+        imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
         setState(() {
           this.imageFile = imageFile;
         });
@@ -135,7 +135,7 @@ class _AddItemState extends State<AddItem> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
+            child: ElevatedButton(
               onPressed: () async {
                 // Navigator.pop(context);
                 // await addRentToolsCtrl.postImage(imageFile);
@@ -145,7 +145,9 @@ class _AddItemState extends State<AddItem> {
                 // }
                 Navigator.pop(context);
               },
-              shape: StadiumBorder(),
+              style: ButtonStyle(
+                shape: MaterialStatePropertyAll(StadiumBorder()),
+              ),
               child: Text(
                 "Done",
                 style: TextStyle(color: Colors.black87),
@@ -205,11 +207,12 @@ class _AddItemState extends State<AddItem> {
             icon: Icon(Icons.arrow_drop_down),
             iconSize: 24,
             elevation: 16,
-            onChanged: (String newValue) {
-              setState(() {
-                dropdownValue = newValue;
-                addRentToolsCtrl.rentToolsModel.toolType = newValue;
-              });
+            onChanged: (newValue) {
+              if (newValue != null)
+                setState(() {
+                  dropdownValue = newValue;
+                  addRentToolsCtrl.rentToolsModel.toolType = newValue;
+                });
             },
             items: <String>['Tractors', 'Harvestors', 'Pesticides', 'Others']
                 .map<DropdownMenuItem<String>>((String value) {

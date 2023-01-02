@@ -5,7 +5,7 @@ import 'package:kisanseva/screens/weather/model/weatherModel.dart';
 class WeatherItem extends StatelessWidget {
   final WeatherData weather;
 
-  WeatherItem({Key key, @required this.weather}) : super(key: key);
+  WeatherItem({Key? key, required this.weather}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +15,13 @@ class WeatherItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(weather.name),
-            Text(weather.main),
+            Text(weather.name!),
+            Text(weather.main!),
             Text('${weather.temp.toString()}°F'),
             Image.network(
                 'https://openweathermap.org/img/w/${weather.icon}.png'),
-            Text(new DateFormat.yMMMd().format(weather.date)),
-            Text(new DateFormat.Hm().format(weather.date)),
+            Text(new DateFormat.yMMMd().format(weather.date!)),
+            Text(new DateFormat.Hm().format(weather.date!)),
           ],
         ),
       ),

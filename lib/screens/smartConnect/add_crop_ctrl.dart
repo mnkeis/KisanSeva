@@ -13,19 +13,19 @@ class AddCropCtrl extends GetxController {
   CropModel cropModel = CropModel();
   String picDownloadUrl = '';
   var logger = Logger(printer: PrettyPrinter());
-  String contact;
+  String? contact;
   // Firestore firestore = FirebaseFirestore.instance;
 
   Future<dynamic> postImage(File imageFile) async {
     logger.d('inside postImage');
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    StorageReference storageReference =
+    Reference storageReference =
         FirebaseStorage.instance.ref().child('crop/$fileName');
     // StorageUploadTask uploadTask = reference.putData(
     //     (await imageFile.getByteData(quality: 25)).buffer.asUint8List());
-    StorageUploadTask uploadTask = storageReference.putFile(imageFile);
+    UploadTask uploadTask = storageReference.putFile(imageFile);
     print('here 2');
-    StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
+    TaskSnapshot storageTaskSnapshot = await uploadTask;
     logger.d(storageTaskSnapshot.ref.getDownloadURL());
     print('here 3');
 
@@ -38,11 +38,10 @@ class AddCropCtrl extends GetxController {
     return storageTaskSnapshot.ref.getDownloadURL();
   }
 
-  getCurrentUser() async {
-    await FirebaseAuth?.instance?.currentUser()?.then((value) {
-      contact = value?.phoneNumber;
-      cropModel.ownerContactInfo = (contact);
-    });
+  getCurrentUser() {
+    final user = FirebaseAuth.instance.currentUser;
+    contact = user?.phoneNumber;
+    cropModel.ownerContactInfo = contact;
   }
 
   // getOwnerInfoFromFirestore() async {
@@ -77,13 +76,13 @@ class AddCropCtrl extends GetxController {
     );
     await postImage(imageFile).then((value) => cropModel.cropImage = value);
     logger.d("CropImage url=${cropModel.cropImage}");
-    logger.d("inside addCrop ${cropModel?.toJson()}");
+    logger.d("inside addCrop ${cropModel.toJson()}");
     await getCurrentUser();
 
-    await Firestore.instance
+    await FirebaseFirestore.instance
         .collection("crop")
-        .document()
-        .setData(cropModel.toJson());
+        .doc()
+        .set(cropModel.toJson());
     // await crudOp.createPost(
     //   collectionName: 'examsResources',
     //   data: _examModel.toJson(),

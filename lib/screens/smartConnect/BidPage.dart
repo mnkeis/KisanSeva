@@ -138,12 +138,14 @@ class _BidPageState extends State<BidPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {
-                  call(displayCropController.cropModel.ownerContactInfo);
+                  call(displayCropController.cropModel.ownerContactInfo!);
                 },
-                elevation: 4,
-                color: Colors.green[400],
+                style: ButtonStyle(
+                  elevation: MaterialStatePropertyAll(4),
+                  backgroundColor: MaterialStatePropertyAll(Colors.green[400]),
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

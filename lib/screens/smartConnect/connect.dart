@@ -15,9 +15,9 @@ import 'package:kisanseva/screens/smartConnect/crop_template.dart';
 import 'BidPage.dart';
 
 class Crop {
-  String imageUrl;
-  String desc;
-  String msp;
+  String? imageUrl;
+  String? desc;
+  String? msp;
 
   Crop({this.imageUrl, this.desc, this.msp});
 }
@@ -90,7 +90,7 @@ class _connectState extends State<connect> {
     return Scaffold(
         appBar: AppBar(title: Text("Smart Connect")),
         body: StreamBuilder<dynamic>(
-          stream: Firestore.instance.collection('crop').snapshots(),
+          stream: FirebaseFirestore.instance.collection('crop').snapshots(),
           // stream: displayRentToolsCtrl.rentToolsStrems(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -101,7 +101,8 @@ class _connectState extends State<connect> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   DocumentSnapshot crop = snapshot.data.documents[index];
-                  CropModel cropModel = CropModel.fromJson(crop.data);
+                  CropModel cropModel =
+                      CropModel.fromJson(crop.data as Map<String, dynamic>);
                   return CropTemplate(cropModel: cropModel);
                 },
               );

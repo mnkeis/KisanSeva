@@ -1,9 +1,9 @@
 class WeatherData {
-  final DateTime date;
-  final String name;
-  final double temp;
-  final String main;
-  final String icon;
+  final DateTime? date;
+  final String? name;
+  final double? temp;
+  final String? main;
+  final String? icon;
 
   WeatherData({this.date, this.name, this.temp, this.main, this.icon});
 

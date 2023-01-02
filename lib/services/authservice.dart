@@ -7,10 +7,11 @@ import 'package:kisanseva/screens/HomeScreen.dart';
 
 class AuthService {
   //Handles Auth
-  final CollectionReference userCollection = Firestore.instance.collection('users');
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
   handleAuth() {
     return StreamBuilder(
-        stream: FirebaseAuth.instance.onAuthStateChanged,
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             return HomeScreen();
@@ -21,15 +22,14 @@ class AuthService {
   }
 
   //Sign out
- Future signOut() async {
-   await FirebaseAuth.instance.signOut();
+  Future signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   //Save to device
-  Future<void> savePhoneNumber(String phno) async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
+  Future<void> savePhoneNumber(String phno) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('Phone Number', phno);
-    
   }
 
   //SignIn
@@ -38,12 +38,11 @@ class AuthService {
     print(authCreds);
   }
 
-  signInWithOTP(smsCode, verId) async{
-    AuthCredential authCreds = PhoneAuthProvider.getCredential(
-        verificationId: verId, smsCode: smsCode);
-   await signIn(authCreds);
-
+  signInWithOTP(smsCode, verId) async {
+    AuthCredential authCreds = PhoneAuthProvider.credential(
+      verificationId: verId,
+      smsCode: smsCode,
+    );
+    await signIn(authCreds);
   }
-
-
 }

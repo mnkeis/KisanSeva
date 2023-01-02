@@ -1,16 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:kisanseva/models/app_localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/splash.dart';
 import 'package:provider/provider.dart';
 import 'services/firebaseUserProvider.dart';
-import 'package:kisanseva/models/language.dart';
 
-void main() {
-  // Firebase.initializeApp();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<FirebaseUserProvider>(
         create: (context) => FirebaseUserProvider()),
@@ -18,12 +17,12 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({Key key, this.title}) : super(key: key);
+  MyApp({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
   static void setLocale(BuildContext context, Locale locale) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(locale);
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(locale);
   }
 
   @override
@@ -31,7 +30,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale;
+  Locale? _locale;
   void setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -75,8 +74,8 @@ class _MyAppState extends State<MyApp> {
       localeResolutionCallback: (locale, supportedLocales) {
         // Check if the current device locale is supported
         for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode &&
-              supportedLocale.countryCode == locale.countryCode) {
+          if (supportedLocale.languageCode == locale?.languageCode &&
+              supportedLocale.countryCode == locale?.countryCode) {
             return supportedLocale;
           }
         }
