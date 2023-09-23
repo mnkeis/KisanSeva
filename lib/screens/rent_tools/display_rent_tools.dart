@@ -354,16 +354,18 @@ class DisplayRentTools extends StatelessWidget {
                       //do something with the data
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data.documents.length,
+                        itemCount: snapshot.data.docs.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          DocumentSnapshot rentTools =
-                              snapshot.data.documents[index];
-                          RentToolsModel rentToolsModel =
-                              RentToolsModel.fromJson(
-                                  rentTools.data as Map<String, dynamic>);
-                          return RentToolsTemplate(
-                              rentToolsModel: rentToolsModel);
+                          final rentTools = snapshot.data.docs[index].data();
+                          if (rentTools != null) {
+                            RentToolsModel rentToolsModel =
+                                RentToolsModel.fromJson(
+                                    rentTools as Map<String, dynamic>);
+                            return RentToolsTemplate(
+                                rentToolsModel: rentToolsModel);
+                          }
+                          return Container();
                         },
                       );
                     } else if (snapshot.hasError) {

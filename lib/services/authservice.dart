@@ -16,7 +16,7 @@ class AuthService {
           if (snapshot.hasData) {
             return HomeScreen();
           } else {
-            return LoginScreen();
+            return HomeScreen();
           }
         });
   }
